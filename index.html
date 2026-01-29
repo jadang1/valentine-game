@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For my Jiayu</title>
+
+  <style>
+    :root{
+      /* Pastel theme */
+      --bg1:#fff1f6;        /* blush pink */
+      --bg2:#f5f3ff;        /* lavender */
+      --ink:#3a2f3a;        /* soft charcoal */
+      --accent:#ff8fb1;     /* pastel pink */
+      --accent2:#b8a7ff;    /* pastel purple */
+      --card:#ffffffcc;
+      --shadow: 0 18px 50px rgba(255, 182, 193, .35);
+      --radius: 24px;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        radial-gradient(1200px 700px at 20% 20%, var(--bg2), transparent 70%),
+        radial-gradient(900px 600px at 80% 30%, #fff6fb, transparent 70%),
+        linear-gradient(135deg, var(--bg1), #eef6ff);
+      overflow:hidden;
+      padding:24px;
+    }
+
+    /* Floating hearts background */
+    .hearts{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.28;
+      filter: blur(.2px);
+    }
+    .heart{
+      position:absolute;
+      font-size:18px;
+      animation: floatUp linear infinite;
+      transform: translateY(110vh);
+    }
+    @keyframes floatUp{
+      from { transform: translateY(110vh) translateX(0) rotate(0deg); }
+      to   { transform: translateY(-20vh) translateX(var(--drift)) rotate(360deg); }
+    }
+
+    .card{
+      width:min(760px, 96vw);
+      background:var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      position:relative;
+    }
+
+    .title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin: 0 0 10px;
+    }
+    .title h1{
+      font-size: 22px;
+      margin:0;
+      letter-spacing:.2px;
+    }
+    .badge{
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,143,177,.16);
+      color: #ff5f95;
+      border: 1px solid rgba(255,143,177,.28);
+      white-space:nowrap;
+      font-weight: 800;
+    }
+
+    /* Avatars (Scenario 2) */
+    .avatars{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:12px;
+      margin: 10px 0 6px;
+      position: relative;
+    }
+
+    .avatarWrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+      width: 140px;
+    }
+
+    .avatars img{
+      width: 104px;
+      height: 104px;
+      object-fit: cover;
+      border-radius: 26px;
+      background: rgba(255,255,255,.7);
+      border: 2px solid rgba(255,255,255,.95);
+      box-shadow: 0 14px 28px rgba(255, 160, 190, .35);
+      transition: transform .35s ease, filter .35s ease;
+      will-change: transform;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .nameTag{
+      font-size: 12px;
+      font-weight: 900;
+      opacity: .85;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.7);
+    }
+
+    @keyframes floaty {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+    #jasmineChar { animation: floaty 4s ease-in-out infinite; }
+    #jiayuChar   { animation: floaty 4.6s ease-in-out infinite; }
+
+    /* Happy reaction on YES */
+    .happy{
+      transform: scale(1.12) rotate(-3deg);
+      filter: saturate(1.05);
+    }
+    .happy2{
+      transform: scale(1.12) rotate(3deg);
+      filter: saturate(1.05);
+    }
+
+    /* Heart burst between them */
+    .burst{
+      position:absolute;
+      left:50%;
+      top:40px;
+      transform: translateX(-50%);
+      font-size: 26px;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease;
+    }
+    .burst.show{
+      opacity:1;
+      animation: pop 900ms ease forwards;
+    }
+    @keyframes pop{
+      0%{ transform: translateX(-50%) translateY(8px) scale(.6); opacity:0; }
+      35%{ transform: translateX(-50%) translateY(-6px) scale(1.1); opacity:1; }
+      100%{ transform: translateX(-50%) translateY(-26px) scale(.9); opacity:0; }
+    }
+
+    .meter{
+      height: 10px;
+      border-radius: 999px;
+      overflow:hidden;
+      background: rgba(0,0,0,.08);
+      margin: 12px 0 6px;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 999px;
+      transition: width .45s ease;
+    }
+
+    .sub{
+      font-size: 14px;
+      opacity:.82;
+      margin: 0 0 12px;
+    }
+
+    .prompt{
+      font-size: 18px;
+      line-height: 1.45;
+      margin: 8px 0 16px;
+    }
+
+    .row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    input, select{
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,.12);
+      background: rgba(255,255,255,.75);
+      outline:none;
+      font-size:16px;
+    }
+
+    .btn{
+      cursor:pointer;
+      border:none;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 16px;
+      font-weight: 800;
+      transition: transform .08s ease, box-shadow .2s ease, opacity .2s ease;
+      box-shadow: 0 10px 22px rgba(0,0,0,.12);
+      user-select:none;
+    }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+
+    .btn.primary{
+      background: linear-gradient(135deg, var(--accent), #ffc1d6);
+      color:white;
+    }
+    .btn.secondary{
+      background: linear-gradient(135deg, #ffffff, #f7f2ff);
+      border: 1px solid rgba(0,0,0,.08);
+      color: var(--ink);
+    }
+    .btn.tiny{
+      padding: 10px 12px;
+      font-size: 14px;
+      border-radius: 14px;
+      box-shadow: 0 8px 16px rgba(0,0,0,.10);
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(184,167,255,.15);
+      border:1px solid rgba(184,167,255,.22);
+      color: #6a57ff;
+      font-weight: 900;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .choices{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:12px;
+      margin-top: 12px;
+    }
+    @media (max-width:560px){
+      .choices{ grid-template-columns: 1fr; }
+      .avatarWrap{ width: 120px; }
+      .avatars img{ width: 92px; height: 92px; }
+    }
+
+    .toast{
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.78);
+      border: 1px dashed rgba(255,143,177,.35);
+      font-size: 14px;
+      line-height:1.4;
+      display:none;
+    }
+
+    /* Confetti canvas */
+    canvas#confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index: 50;
+    }
+
+    /* “No” button dodge area */
+    .dodge-wrap{
+      position:relative;
+      min-height: 56px;
+      width: 100%;
+    }
+    .dodge-wrap .btn.secondary{
+      position:absolute;
+      left:0;
+      top:0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hearts" id="hearts"></div>
+  <canvas id="confetti"></canvas>
+
+  <main class="card" aria-live="polite">
+    <div class="title">
+      <h1>For my Jiayu</h1>
+      <span class="badge" id="badge">Level 1 of 4</span>
+    </div>
+
+    <!-- Scenario 2 characters -->
+    <div class="avatars">
+      <div class="avatarWrap">
+        <img id="jasmineChar" src="assets/jasmine.png" alt="Jasmine character">
+        <div class="nameTag">Jasmine</div>
+      </div>
+
+      <div class="burst" id="burst">👁🫦👁</div>
+
+      <div class="avatarWrap">
+        <img id="jiayuChar" src="assets/jiayu.png" alt="Jiayu character">
+        <div class="nameTag">Jiayu</div>
+      </div>
+    </div>
+
+    <div class="meter"><div class="bar" id="bar"></div></div>
+    <p class="sub" id="sub">Complete the quest to unlock a very important question…</p>
+
+    <p class="prompt" id="prompt"></p>
+    <div id="content"></div>
+
+    <div class="toast" id="toast"></div>
+  </main>
+
+<script>
+  // ---------- helpers ----------
+  const $ = (sel) => document.querySelector(sel);
+  const content = $("#content");
+  const promptEl = $("#prompt");
+  const badgeEl = $("#badge");
+  const barEl = $("#bar");
+  const toastEl = $("#toast");
+
+  const state = {
+    step: 0,
+    name: "Jiayu",
+    snack: "",
+    vibe: "",
+    score: 0
+  };
+
+  const steps = [
+    {
+      title: "Level 1 of 4",
+      sub: "Hello hello 👀",
+      prompt: "Hi Beby! Let's begin...heh",
+      render(){
+        content.innerHTML = `
+          <div class="row">
+            <button class="btn primary" id="startBtn">Start Quest ✨</button>
+            <button class="btn secondary" id="peekBtn">What is this? 🤨</button>
+          </div>
+        `;
+        $("#startBtn").onclick = () => next();
+        $("#peekBtn").onclick = () => showToast("tch it’s a minigame my bro.");
+      }
+    },
+    {
+      title: "Level 2 of 4",
+      sub: "We need your official player name.",
+      prompt: "Enter your name (pretty sure it’s Jiayu but I’ll let you type it my bro😹):",
+      render(){
+        content.innerHTML = `
+          <div class="row">
+            <input id="nameInput" placeholder="Type here..." maxlength="20" />
+            <button class="btn primary tiny" id="okName">Continue ➜</button>
+          </div>
+          <div class="pill">Tip: press Enter</div>
+        `;
+        const input = $("#nameInput");
+        input.value = state.name;
+        input.focus();
+
+        const go = () => {
+          const v = input.value.trim();
+          state.name = v ? v : "Jiayu";
+          state.score += 1;
+          // update the visible name tag for Jiayu too
+          document.querySelectorAll(".nameTag")[1].textContent = state.name;
+          next();
+        };
+
+        $("#okName").onclick = go;
+        input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") go(); });
+      }
+    },
+    {
+      title: "Level 3 of 4",
+      sub: "Mini choices = maximum gg power.",
+      prompt: () => `Okay ${escapeHtml(state.name)}… pick your ideal date:`,
+      render(){
+        content.innerHTML = `
+          <div class="choices">
+            <button class="btn secondary" data-vibe="cozy">🍿 Chillings at home</button>
+            <button class="btn secondary" data-vibe="foods">🥘 Go out to eats and fat</button>
+            <button class="btn secondary" data-vibe="activity">🪼 An fun activity outside.. </button>
+            <button class="btn secondary" data-vibe="gambling">🎲 Gacha or somethings</button>
+          </div>
+        `;
+        content.querySelectorAll("button").forEach(btn=>{
+          btn.onclick = () => {
+            state.vibe = btn.dataset.vibe;
+            state.score += 2;
+            next();
+          };
+        });
+      }
+    },
+    {
+      title: "Level 4 of 4",
+      sub: "Last one vro…",
+      prompt: "Choose a foods:",
+      render(){
+        content.innerHTML = `
+          <div class="row" style="width:100%">
+            <select id="snack">
+              <option value="">Pick one…mmmm</option>
+              <option value="boba">🧋 boba and backshots whattttt</option>
+              <option value="malatang">🌶️ malatang</option>
+              <option value="pho">🍗 pho ga omg</option>
+              <option value="idk">☝️ secret other option idk</option>
+            </select>
+            <button class="btn primary tiny" id="snackBtn">Power Up ⚡</button>
+          </div>
+        `;
+        $("#snackBtn").onclick = () => {
+          const v = $("#snack").value;
+          if(!v) return showToast("Pick a food brody 😭");
+          state.snack = v;
+          state.score += 2;
+          next();
+        };
+      }
+    },
+    {
+      title: "Evil Boss 💦",
+      sub: "You’ve unlocked the question…",
+      prompt: () => finalPrompt(),
+      render(){
+        content.innerHTML = `
+          <div class="row" style="margin-top:10px;">
+            <button class="btn primary" id="yesBtn">YES duh💋</button>
+          </div>
+
+          <div class="dodge-wrap" style="margin-top:12px;">
+            <button class="btn secondary" id="noBtn">No.🔫</button>
+          </div>
+
+          <div class="pill" id="scorePill">Compatibility Score: ${state.score}/5</div>
+        `;
+
+        const noBtn = $("#noBtn");
+        const wrap = noBtn.parentElement;
+
+        const dodge = () => {
+          const wrapRect = wrap.getBoundingClientRect();
+          const btnRect = noBtn.getBoundingClientRect();
+          const maxX = wrapRect.width - btnRect.width;
+          const maxY = wrapRect.height - btnRect.height;
+
+          const x = Math.max(0, Math.min(maxX, Math.random() * maxX));
+          const y = Math.max(0, Math.min(maxY, Math.random() * maxY));
+
+          noBtn.style.left = x + "px";
+          noBtn.style.top = y + "px";
+          showToast("Grrrrr...so mean");
+        };
+
+        wrap.style.height = "56px";
+        noBtn.style.left = "0px";
+        noBtn.style.top = "0px";
+
+        noBtn.addEventListener("mouseenter", dodge);
+        noBtn.addEventListener("click", dodge);
+
+        $("#yesBtn").onclick = () => celebrate();
+      }
+    },
+    {
+      title: "I love you ;P",
+      sub: "We are so back.",
+      prompt: () => `YAYYYYY my ${escapeHtml(state.name)}!!! 💋💋💋`,
+      render(){
+        content.innerHTML = `
+          <p class="prompt" style="margin-top:0">
+            GG. Your Valentine date will be
+            <strong>${state.vibe ? vibeLine(state.vibe) : "cute"}</strong>
+            and eatings <strong>${snackLine(state.snack)}</strong>.
+          </p>
+          <div class="row">
+            <button class="btn primary" id="replay">Play Again 🔁</button>
+            <button class="btn secondary" id="copy">Copy a cute message 📋</button>
+          </div>
+        `;
+        $("#replay").onclick = () => {
+          state.step = 0; state.score = 0; state.vibe=""; state.snack="";
+          // reset character reactions
+          unHappy();
+          render();
+        };
+        $("#copy").onclick = async () => {
+          const msg = `Jiayu, will you be my Valentine? 🤤 (you already said yes btw)`;
+          try{
+            await navigator.clipboard.writeText(msg);
+            showToast("Copied! Paste it anywhere 💌");
+          } catch {
+            showToast("Couldn’t auto-copy here—just screenshot this page 😭💖");
+          }
+        };
+      }
+    }
+  ];
+
+  function vibeLine(v){
+    const map = {
+      cozy: "🍿 chillings at home",
+      foods: "🥘 go out to eats",
+      activity: "🪼 an fun activity outside",
+      gambling: "🎲 gambling"
+    };
+    return map[v] || "you";
+  }
+  function snackLine(s){
+    const map = {
+      boba: "boba 🧋",
+      malatang: "🌶️ malatang",
+      pho: "pho ga 🍗",
+      idk: "☝️ mystery food option"
+    };
+    return map[s] || "me";
+  }
+
+  function finalPrompt(){
+    const snack = snackLine(state.snack);
+    const vibe = vibeLine(state.vibe);
+    return `Okay ${escapeHtml(state.name)}… final question:<br><br>
+      Will you be my Valentine? 💌<br>
+      <span style="font-size:14px; opacity:.82">Promise: ${vibe}, plus ${snack}.</span>`;
+  }
+
+  function showToast(text){
+    toastEl.style.display = "block";
+    toastEl.textContent = text;
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=> toastEl.style.display="none", 2400);
+  }
+
+  function next(){
+    state.step++;
+    render();
+  }
+
+  function render(){
+    const step = steps[state.step];
+    badgeEl.textContent = step.title;
+    $("#sub").textContent = step.sub;
+
+    const pct = Math.round((state.step / (steps.length-1)) * 100);
+    barEl.style.width = pct + "%";
+
+    const p = typeof step.prompt === "function" ? step.prompt() : step.prompt;
+    promptEl.innerHTML = p;
+
+    toastEl.style.display="none";
+    step.render();
+  }
+
+  // ---------- character reactions ----------
+  function unHappy(){
+    $("#jasmineChar")?.classList.remove("happy");
+    $("#jiayuChar")?.classList.remove("happy2");
+  }
+
+  function burstHearts(){
+    const b = $("#burst");
+    b.classList.remove("show");
+    // force reflow to restart animation
+    void b.offsetWidth;
+    b.classList.add("show");
+  }
+
+  // ---------- confetti ----------
+  const confetti = (() => {
+    const canvas = $("#confetti");
+    const ctx = canvas.getContext("2d");
+    let raf, particles = [];
+
+    function resize(){
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+
+    function spawn(count=140){
+      particles = [];
+      for(let i=0;i<count;i++){
+        particles.push({
+          x: Math.random() * window.innerWidth,
+          y: -20 - Math.random()*220,
+          r: 3 + Math.random()*4,
+          vx: -2 + Math.random()*4,
+          vy: 2 + Math.random()*5,
+          rot: Math.random()*Math.PI,
+          vr: -0.2 + Math.random()*0.4,
+          life: 130 + Math.random()*90
+        });
+      }
+    }
+
+    function tick(){
+      ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+      particles.forEach(p=>{
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.vy += 0.03;
+        p.life -= 1;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.fillStyle = `hsl(${(p.x+p.y)%360} 75% 72%)`;
+        ctx.fillRect(-p.r, -p.r, p.r*2.2, p.r*1.2);
+        ctx.restore();
+      });
+      particles = particles.filter(p=>p.life>0 && p.y < window.innerHeight+40);
+
+      if(particles.length){
+        raf = requestAnimationFrame(tick);
+      } else {
+        cancelAnimationFrame(raf);
+        ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+      }
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+
+    return { boom(){ spawn(170); tick(); } };
+  })();
+
+  function celebrate(){
+    unHappy();
+
+    // Characters react
+    $("#jasmineChar")?.classList.add("happy");
+    $("#jiayuChar")?.classList.add("happy2");
+
+    // little heart burst between them
+    burstHearts();
+
+    // confetti + toast
+    confetti.boom();
+    showToast("SUCH A GOOD BOY");
+
+    // move to accepted screen after a beat
+    setTimeout(()=>{
+      state.step++;
+      render();
+    }, 700);
+  }
+
+  // ---------- floating hearts background ----------
+  function makeHearts(){
+    const holder = $("#hearts");
+    const emojis = ["💗","💖","💘","💕","💞","💓","😛"];
+    const count = 24;
+
+    for(let i=0;i<count;i++){
+      const span = document.createElement("span");
+      span.className = "heart";
+      span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      span.style.left = Math.random()*100 + "vw";
+      span.style.setProperty("--drift", (-40 + Math.random()*80) + "px");
+      span.style.animationDuration = (10 + Math.random()*10) + "s";
+      span.style.animationDelay = (-Math.random()*10) + "s";
+      span.style.fontSize = (14 + Math.random()*18) + "px";
+      holder.appendChild(span);
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str).replaceAll("&","&amp;")
+      .replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+  }
+
+  // If images fail to load, keep it from looking broken:
+  // (optional: you can replace with emojis or placeholders)
+  ["jasmineChar","jiayuChar"].forEach(id=>{
+    const img = document.getElementById(id);
+    if(!img) return;
+    img.onerror = () => {
+      img.style.display = "none";
+      showToast("Heads up: couldn’t find your character image. Check /assets filenames 👀");
+    };
+  });
+
+  makeHearts();
+  render();
+</script>
+</body>
+</html>
